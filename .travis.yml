@@ -7,7 +7,9 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-    packages: g++-7
+    packages:
+      - gcc-7
+      - g++-7
 
 install:
   - |
@@ -19,6 +21,7 @@ install:
 
 script:
   - mkdir -p build && cd build
-  - cmake -DCMAKE_BUILD_TYPE=Debug ..
+  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
   - cmake --build . --target self_test
   - ./self_test -s
