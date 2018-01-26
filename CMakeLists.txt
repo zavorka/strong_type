@@ -14,6 +14,7 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 
 if (MASTER_PROJECT AND CMAKE_BUILD_TYPE MATCHES Debug)
+  enable_testing()
 
   set(CMAKE_CXX_STANDARD 17)
   set(CMAKE_CXX_STANDARD_REQUIRED YES)
@@ -77,6 +78,8 @@ target_link_libraries(
   PRIVATE
     strong_type
 )
+add_test(NAME self_test COMMAND self_test)
+
 
 install(
   TARGETS

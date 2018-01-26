@@ -18,7 +18,7 @@ install:
   - g++ -v && cmake --version
 
 script:
-  - mkdir -p build
-  - cd build
+  - mkdir -p build && cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug ..
   - cmake --build . --target self_test
+  - ./self_test -s
