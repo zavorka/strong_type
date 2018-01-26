@@ -1,4 +1,4 @@
-# strong_type
+# strong_type [![Build Status](https://travis-ci.org/zavorka/strong_type.svg?branch=default_ctor_tag)](https://travis-ci.org/zavorka/strong_type)
 An experimental C++ strong typedef-ish thingie
 
 Highly experimental, for now.
