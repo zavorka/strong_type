@@ -1,27 +1,19 @@
 dist: trusty
 sudo: required
-language: cpp
-compiler: gcc
+servies:
+  - docker
 
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - gcc-7
-      - g++-7
-
-install:
-  - |
-    CMAKE_URL="https://cmake.org/files/v3.10/cmake-3.10.2-Linux-x86_64.tar.gz"
-    mkdir cmake && travis_retry wget --no-check-certificate -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-    export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
-  - g++ -v && cmake --version
+before_install:
+  - docker pull zavorka/debian-gcc
 
 script:
-  - mkdir -p build && cd build
-  - export PATH=${DEPS_DIR}/cmake/bin:${PATH}
-  - cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
-  - cmake --build . --target self_test
-  - ./self_test -s
+  - |
+    COMMAND=$(cat <<-EOF
+    set -e
+    mkdir -p /src/build && cd /src/build
+    cmake -DCMAKE_BUILD_TYPE=Debug ..
+    cmake --build . --target self_test
+    ./self_test -s
+    EOF
+    )
+  - docker run --rm -v ${PWD}:/src zavorka/debian-gcc /bin/bash -c "$COMMAND"
