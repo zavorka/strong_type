@@ -13,7 +13,7 @@ script:
     mkdir -p /src/build && cd /src/build
     cmake -DCMAKE_BUILD_TYPE=Debug ..
     cmake --build . --target self_test
-    ./self_test
+    ctest -V
     EOF
     )
   - docker run --rm -v ${PWD}:/src zavorka/debian-gcc /bin/bash -c "$COMMAND"
