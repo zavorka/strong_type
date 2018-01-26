@@ -1,5 +1,5 @@
 dist: trusty
-sudo: require
+sudo: required
 language: cpp
 compiler: gcc
 
@@ -7,15 +7,17 @@ addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
-    packages:
-      - gcc-7
-      - g++-7
-      - cmake
+    packages: g++-7
 
-
-script: 
+install:
+  - |
+    CMAKE_URL="https://cmake.org/files/v${CMAKE_VERSION%.[0-9]}/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz"
+    mkdir cmake && travis_retry wget --no-check-certificate -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
+    export PATH=${DEPS_DIR}/cmake/bin:${PATH}
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 90
-  - gcc -v && g++ -v && cmake --version
+  - g++ -v && cmake --version
+
+script:
   - mkdir -p build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Debug ..
